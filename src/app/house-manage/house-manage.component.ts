@@ -1,7 +1,7 @@
-import L from 'leaflet';
 import { Component, OnInit } from '@angular/core';
-import { MapService } from '../services/map.service';
 import { LayoutService } from '../services/layout.service';
+import { MapService } from '../services/map.service';
+import L from 'leaflet';
 
 @Component({
   selector: 'app-house-manage',
@@ -10,13 +10,15 @@ import { LayoutService } from '../services/layout.service';
 })
 export class HouseManageComponent implements OnInit {
   map: any;
-  searchBarWidth:number;
-  constructor(private mapService: MapService,private layoutService:LayoutService) { 
-    this.searchBarWidth=layoutService.getActualScreenSize().width;
+  searchBarWidth: number;
+  constructor(private mapService: MapService, private layoutService: LayoutService) {
+    this.searchBarWidth = layoutService.getActualScreenSize().width;
 
   }
 
-  ngOnInit() {  
-    this.map =this.mapService.createMap('map',[28.905527517199516, 118.50629210472107],7);
+  ngOnInit() {
+    this.map = this.mapService.createMap('map', [28.905527517199516, 118.50629210472107], 7);
+
+    this.mapService.setMyLocation(this.map,[28.905527517199516, 118.50629210472107]);
   }
 }
