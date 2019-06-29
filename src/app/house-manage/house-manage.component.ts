@@ -94,21 +94,23 @@ export class HouseManageComponent implements OnInit {
             //#region 显示乡镇相关内容
             console.log("123");
             that.towns.features.forEach(element => {
+              var popup = L.popup({closeButton:false,closeOnClick:false,closeOnEscapeKey:false})
+              .setLatLng(element.properties.position)
+              .setContent('<span>'+element.properties.FNAME+'</span><br /><span>'+element.properties.count+'户</span>').addTo(that.labelMarkerLayer)
+              .openOn(that.map);
 
-              var countyCircleIcon = L.divIcon({
-                iconSize: [10, 10],
-                className: 'circle county',                 
-              });
-              L.marker(element.properties.position, { icon: countyCircleIcon }).addTo(that.labelMarkerLayer)
-              .bindPopup(element.properties.FNAME).openPopup();
+              // var countyCircleIcon = L.divIcon({
+              //   iconSize: [1, 1],
+              //   className: 'circle town',                 
+              // });
+              // L.marker(element.properties.position, { icon: countyCircleIcon }).addTo(that.labelMarkerLayer)
+              // .bindPopup(element.properties.FNAME).openPopup();
             
               //添加境界对象
               L.geoJSON(element, {
                 style: function (feature) {
                   return { color: feature.properties.color };
                 }
-              }).bindPopup(function (layer) {
-                return layer.feature.properties.FNAME;
               }).addTo(that.boundaryLayer);
             });
             //#endregion               
@@ -126,25 +128,8 @@ export class HouseManageComponent implements OnInit {
 
       that.previousLevel = level;
     });
-
-
-
-
-
-    // var kcCircleIcon = L.divIcon({
-    //   iconSize: [70, 70],
-    //   className: 'circle county',
-    //   html: `<span>衢州市<br/>595553户</span>`
-    // });
-    // var qzMarker = L.marker([28.9731569040, 118.8547361920], { icon: qzCircleIcon }).addTo(this.map);
-
-
-
+ 
     var layerControl = this.map.layerControl;
-
-
-
-
   }
 
   _mapLevelClassify(level: number): string {
@@ -155,7 +140,7 @@ export class HouseManageComponent implements OnInit {
     else if (level >= 8 && level <= 9) {
       return "县";
     }
-    else if (level >= 10 && level <= 12) {
+    else if (level >= 10 && level <= 15) {
       return "乡镇";
     }
     else {
