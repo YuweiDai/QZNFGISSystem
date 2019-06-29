@@ -88,6 +88,7 @@ export class LandUseComponent implements OnInit {
     PickerService.showPicker(
       { value: this.value, data: this.seasons },
       result => {
+        
         this.name = this.getResult(result);
         this.value = this.getValue(result);
       },
