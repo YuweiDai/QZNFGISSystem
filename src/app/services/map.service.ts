@@ -84,6 +84,7 @@ export class MapService {
   setMyLocation(map: any, postion: Array<number>): any {
     if (this.locationMarker == null) {
       var locationIcon = L.divIcon({
+        
         className: 'mapboxgl-user-location-dot mapboxgl-marker mapboxgl-marker-anchor-center',
         html: `<span style="transform:'translate(-50%, -50%) translate(960px, 469px)'" />`
       });
