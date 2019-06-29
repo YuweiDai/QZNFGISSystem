@@ -1,3 +1,9 @@
-<p>
-  house-manage works!
-</p>
+<div class="mapContainer">
+  <div id="map"></div>
+</div>
+
+<div class="searchContainer" [ngStyle]="{'width.px': searchBarWidth}">
+  <div style="border-bottom: 1px solid #ddd;">
+    <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8" ></SearchBar>
+  </div>
+</div>
