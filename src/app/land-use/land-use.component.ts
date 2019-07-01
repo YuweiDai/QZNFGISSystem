@@ -1,8 +1,9 @@
 import L from 'leaflet';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewEncapsulation } from '@angular/core';
 import { MapService } from '../services/map.service';
 import { PickerService } from 'ng-zorro-antd-mobile';
 import { LayoutService } from '../services/layout.service';
+
 
 @Component({
   selector: 'app-land-use',
@@ -57,11 +58,6 @@ export class LandUseComponent implements OnInit {
   value = [];
 
 
-  constructor(private _picker: PickerService) {
-    setTimeout(() => {
-      //this.delayData = this.data;
-    }, 10000);
-  }
 
  
   getResult(result) {
@@ -83,12 +79,12 @@ export class LandUseComponent implements OnInit {
     });
     return value;
   }
-
+//村庄选择器
   showPicker() {
     PickerService.showPicker(
       { value: this.value, data: this.seasons },
       result => {
-        
+
         this.name = this.getResult(result);
         this.value = this.getValue(result);
       },
@@ -97,15 +93,128 @@ export class LandUseComponent implements OnInit {
 
       }
     );
-  }
-  // map: any;
-  //searchBarWidth:number;
- // constructor(private mapService: MapService,private layoutService:LayoutService) { 
-    //this.searchBarWidth=layoutService.getActualScreenSize().width;
+  };
 
-  //}
+
+
+
+//复选框功能模块
+initData: Array<any>;
+  show: boolean = false;
+  menuHeight: number = document.documentElement.clientHeight * 0.6;
+  dataMenu: Array<any> = [
+    {
+      value: '1',
+      label: '柯城区',
+      children: [
+        {
+          label: '航埠镇',
+          value: '1'
+        },
+        {
+          label: '沟溪乡',
+          value: '2'
+        },
+        {
+          label: '石梁镇',
+          value: '3'
+        },
+        {
+          label: '石室乡',
+          value: '4'
+        },
+        {
+          label: '华墅乡',
+          value: '5'
+        },
+        {
+          label: '姜家山乡',
+          value: '6'
+        }
+      ]
+    },
+    {
+      value: '2',
+      label: '衢江区',
+      children: [
+        {
+          label: '七里乡',
+          value: '1'
+        },
+        {
+          label: '九华乡',
+          value: '2'
+        },
+        {
+          label: '万田乡',
+          value: '3'
+        },
+        {
+          label: '杜泽镇',
+          value: '4'
+        }
+      ]
+    },
+    {
+      value: '3',
+      label: '常山县',
+      children: [
+        {
+          label: '天马镇',
+          value: '1'
+        }
+      ]
+    }
+  ];
+
+  onChange(value) {
+    console.log(value);
+  }
+//乡镇选择器
+  handleClick() {
+    //e.preventDefault();
+    this.show = !this.show;
+    if (!this.initData) {
+      setTimeout(() => {
+        this.initData = this.dataMenu;
+      }, 500);
+    }
+  }
+
+  onMaskClick() {
+    this.show = false;
+  }
+
+  onOk(value) {
+    console.log(value);
+    this.onCancel();
+  }
+
+  onCancel() {
+    this.show = false;
+  }
+
+
+  choose(event) {
+    switch(event.value){
+      case "村庄选择器":
+      this.showPicker();
+      break;
+      case "乡镇选择器":
+      this.handleClick();
+      break;
+    }
+    console.log('index: ', event.selectedIndex, 'value: ', event.value);
+  }
+
+   map: any;
+  searchBarWidth:number;
+  constructor(private _picker: PickerService,private mapService: MapService,private layoutService:LayoutService) { 
+    this.searchBarWidth=layoutService.getActualScreenSize().width;
+
+  }
 
   ngOnInit() {  
-   // this.map =this.mapService.createMap('map',[28.905527517199516, 118.50629210472107],7);
+    this.map =this.mapService.createMap('map',[28.905527517199516, 118.50629210472107],7);
   } 
 }

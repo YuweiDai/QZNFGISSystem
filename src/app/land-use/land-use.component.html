@@ -7,4 +7,29 @@
     <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8" ></SearchBar>
   </div>
 </div> -->
-<div Button (click)="showPicker()">区域选择</div>
+
+<div class="mapContainer">
+  <div id="map"></div>
+</div>
+
+<SegmentedControl style="top:3%;position: absolute;" [values]="['县区选择器', '乡镇选择器', '村庄选择器']" (onChange)="choose($event)"
+></SegmentedControl>
+
+
+
+<div [ngClass]="[show ? 'multi-menu-active' : '']">
+ 
+  <Menu *ngIf="show && initData"
+        class="multi-foo-menu"
+        [data]="initData"
+        [multiSelect]="true"
+        (onChange)="onChange($event)"
+        (onOk)="onOk($event)"
+        (onCancel)="onCancel()"
+        [height]="menuHeight">
+  </Menu>
+  <div *ngIf="show && !initData" style="width: 100% ;height: 300px; display: flex; justify-content: center; align-items: center">
+    <ActivityIndicator [size]="'large'"></ActivityIndicator>
+  </div>
+  <div *ngIf="show" class="menu-mask3" (click)="onMaskClick()"></div>
+</div>
