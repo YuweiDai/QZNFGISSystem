@@ -19,7 +19,7 @@
 
 <div [ngClass]="[show ? 'multi-menu-active' : '']">
  
-  <Menu *ngIf="show && initData"
+  <Menu *ngIf="show1 && initData"
         class="multi-foo-menu"
         [data]="initData"
         [multiSelect]="true"
@@ -33,3 +33,21 @@
   </div>
   <div *ngIf="show" class="menu-mask3" (click)="onMaskClick()"></div>
 </div>
+
+<!-- <div [ngClass]="[show1 ? 'single-multi-menu-active' : '']">
+<Menu *ngIf="show1 && initData1"
+class="single-multi-foo-menu"
+[data]="initData1"
+[level]="1"
+[value]="['1']"
+[multiSelect]="true"
+(onChange)="onChange1($event)"
+(onOk)="onOk1($event)"
+(onCancel)="onCancel1()"
+[height]="menuHeight">
+</Menu>
+<div *ngIf="show && !initData" style="width: 100% ;height: 200px; display: flex; justify-content: center; align-items: center">
+<ActivityIndicator [size]="'large'"></ActivityIndicator>
+</div>
+<div *ngIf="show1" class="menu-mask4" (click)="onMaskClick1()"></div>
+</div> -->

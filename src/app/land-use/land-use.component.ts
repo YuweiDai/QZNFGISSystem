@@ -13,6 +13,7 @@ import { LayoutService } from '../services/layout.service';
 export class LandUseComponent implements OnInit {
 
   delayData = [];
+  //村庄数据
   seasons = [
     {
       label: '柯城区',
@@ -195,6 +196,69 @@ initData: Array<any>;
   }
 
 
+ /*  initData1: Array<any>;
+  show1: boolean = false;
+  data1: Array<any> = [
+    {
+      value: '1',
+      label: '柯城区'
+    },
+    {
+      value: '2',
+      label: '衢江区'
+    },
+    {
+      value: '3',
+      label: '江山市'
+    },
+    {
+      value: '3',
+      label: '常山县'
+    },
+    {
+      value: '3',
+      label: '开化县'
+    },
+    {
+      value: '3',
+      label: '龙游县'
+    }
+  ];
+
+  onChange1(value) {
+    console.log(value);
+  }
+//县区选择器
+  handleClick1() {
+    this.show1 = !this.show1;
+    if (!this.initData1) {
+      setTimeout(() => {
+        this.initData1 = this.data1;
+      }, 500);
+    }
+  }
+
+  onMaskClick1() {
+    this.show = false;
+  }
+
+  onOk1(value) {
+    console.log(value);
+    this.onCancel();
+  }
+
+  onCancel1() {
+    console.log('onCancel');
+    this.show = false;
+  }
+ */
+
+
+
+
+
+
+
   choose(event) {
     switch(event.value){
       case "村庄选择器":
@@ -203,9 +267,13 @@ initData: Array<any>;
       case "乡镇选择器":
       this.handleClick();
       break;
+      case "县区选择器":
+      this.handleClick();
+      break;
     }
     console.log('index: ', event.selectedIndex, 'value: ', event.value);
   }
+
 
    map: any;
   searchBarWidth:number;
@@ -215,6 +283,6 @@ initData: Array<any>;
   }
 
   ngOnInit() {  
-    this.map =this.mapService.createMap('map',[28.905527517199516, 118.50629210472107],7);
+   // this.map =this.mapService.createMap('map',[28.905527517199516, 118.50629210472107],7);
   } 
 }
