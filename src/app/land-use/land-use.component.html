@@ -9,17 +9,19 @@
 </div> -->
 
 <div class="mapContainer">
-  <div id="map"></div>
+  <div id="map" class="map" style="position: absolute;width: 100%;" [ngStyle]="{'height': mapheight}"></div>
 </div>
 
-<SegmentedControl style="top:3%;position: absolute;" [values]="['县区选择器', '乡镇选择器', '村庄选择器']" (onChange)="choose($event)"
+<!-- <SegmentedControl style="top:3%;position: absolute;" [values]="['县区选择器', '乡镇选择器', '村庄选择器']" (onChange)="choose($event)"
 ></SegmentedControl>
-
+ -->
+<div Button [type]="'primary'" [inline]="true" [size]="'small'" (click)="chooseCounty()" style="position:absolute;width: 100px;top:10px;z-index: 1000;">县区选择</div>
+<div Button [type]="'primary'" [inline]="true" [size]="'small'" (click)="chooseTown()"style="position:absolute;width: 100px;top:10px;left: 110px;z-index: 1000;">乡镇选择</div>
+<div Button [type]="'primary'" [inline]="true" [size]="'small'" (click)="chooseVillage()" style="position:absolute;width: 100px;top:10px;left: 220px;z-index: 1000;">村庄选择</div>
 
 
 <div [ngClass]="[show ? 'multi-menu-active' : '']">
- 
-  <Menu *ngIf="show1 && initData"
+  <Menu *ngIf="show && initData"
         class="multi-foo-menu"
         [data]="initData"
         [multiSelect]="true"
@@ -34,12 +36,12 @@
   <div *ngIf="show" class="menu-mask3" (click)="onMaskClick()"></div>
 </div>
 
-<!-- <div [ngClass]="[show1 ? 'single-multi-menu-active' : '']">
+<div [ngClass]="[show1 ? 'single-multi-menu-active' : '']">
 <Menu *ngIf="show1 && initData1"
 class="single-multi-foo-menu"
 [data]="initData1"
 [level]="1"
-[value]="['1']"
+[value]=countriesList
 [multiSelect]="true"
 (onChange)="onChange1($event)"
 (onOk)="onOk1($event)"
@@ -50,4 +52,30 @@ class="single-multi-foo-menu"
 <ActivityIndicator [size]="'large'"></ActivityIndicator>
 </div>
 <div *ngIf="show1" class="menu-mask4" (click)="onMaskClick1()"></div>
-</div> -->
+</div>
+
+<Card [full]="true" *ngIf="showCard" style="position: absolute;top:60%;height: 40%;width: 100%">
+  <CardHeader [title]="cardTitle"
+              [thumb]="'https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg'"
+              [thumbStyle]="thumbStyle"
+              [extra]="extra"
+  >
+    <ng-template #extra>
+      <span>土地资源信息</span>
+    </ng-template>
+  </CardHeader>
+  <CardBody>
+    <div>
+      <p>村庄建设用地面积：{{czarea}}</p>
+      <p>复垦为耕地面积：{{fkarea}}</p>
+      <p>耕地提升后备资源面积：{{gdarea}}</p>
+      <p>垦造耕地后备资源面积：{{kzarea}}</p>
+      <hr style="height:1px;border:none;border-top:1px dashed #0066CC;" />  
+    </div>
+  </CardBody>
+  <CardFooter [content]="'footer content'" [extra]="footerExtra">
+    <ng-template #footerExtra>
+      <div>extra footer content</div>
+    </ng-template>
+  </CardFooter>
+</Card>

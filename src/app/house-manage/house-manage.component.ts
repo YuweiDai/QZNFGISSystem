@@ -43,7 +43,7 @@ export class HouseManageComponent implements OnInit {
 
       var previousClass = that._mapLevelClassify(that.previousLevel);
       var currentClass = that._mapLevelClassify(level);
-
+      console.log("444");
       if (previousClass != currentClass) {
         that.boundaryLayer.clearLayers();
         that.labelMarkerLayer.clearLayers();
