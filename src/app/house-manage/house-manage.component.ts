@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ModalService } from 'ng-zorro-antd-mobile';
 import { PickerService } from 'ng-zorro-antd-mobile';
 
@@ -13,6 +14,8 @@ import L from 'leaflet';
   styleUrls: ['./house-manage.component.less']
 })
 export class HouseManageComponent implements OnInit {
+  pageTitle = "地图看房";
+
   qzBou: any;
   counties: any;
   towns: any;
@@ -88,8 +91,9 @@ export class HouseManageComponent implements OnInit {
     Status: "正常"
   };
 
-  constructor(private mapService: MapService, private layoutService: LayoutService, private geoDataService: GeodataService,
+  constructor(private titleService: Title, private mapService: MapService, private layoutService: LayoutService, private geoDataService: GeodataService,
     private _pickerService: PickerService) {
+    this.titleService.setTitle("地图看房");
     this.searchBarWidth = layoutService.getActualScreenSize().width;
 
     geoDataService.getQZBou().subscribe(q => {
@@ -130,6 +134,9 @@ export class HouseManageComponent implements OnInit {
 
   ngOnInit() {
     var that = this;
+
+
+
     that.map = that.mapService.createMap('map', [28.905527517199516, 118.50629210472107], that.previousLevel + 1);
     that.mapService.setMyLocation(that.map, [28.9731944495, 118.8546932766]);
     that.boundaryLayer = L.featureGroup().addTo(that.map);

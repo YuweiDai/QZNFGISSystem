@@ -67,13 +67,13 @@ export class MapService {
       var province = L.tileLayer("http://srv{s}.zjditu.cn/ZJEMAP_2D/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=TDT_ZJEMAP&tileMatrixSet=default028mm&TileMatrix={z}&TileRow={y}&TileCol={x}&style=default&format=image/jpgpng", {
         subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
         minZoom: 7,
-        maxZoom: 17,
+        maxZoom: 19,
         zoomOffset: 1
       });
       var provinceAnno = L.tileLayer("http://srv{s}.zjditu.cn/ZJEMAPANNO_2D/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=TDT_ZJEMAPANNO&tileMatrixSet=default028mm&TileMatrix={z}&TileRow={y}&TileCol={x}&style=default&format=image/jpgpng", {
         subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
         minZoom: 7,
-        maxZoom: 17,
+        maxZoom: 19,
         zoomOffset: 1
       });
       layerGroup = L.layerGroup([province, provinceAnno]);
