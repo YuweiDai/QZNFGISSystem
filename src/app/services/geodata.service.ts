@@ -43,6 +43,14 @@ export class GeodataService {
       );
   }
  
+  getFWMBou (): Observable<any[]> {
+    return this.http.get<any[]>('assets/data/fwm.json')
+      .pipe(
+        tap(_ => this.log('fetched heroes')),
+        catchError(this.handleError<any[]>('getHeroes', []))
+      );
+  }
+
 
    /**
    * Handle Http operation that failed.
