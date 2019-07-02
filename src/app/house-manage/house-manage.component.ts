@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ModalService } from 'ng-zorro-antd-mobile';
+import { PickerService } from 'ng-zorro-antd-mobile';
 
 import { LayoutService } from '../services/layout.service';
 import { MapService } from '../services/map.service';
@@ -11,18 +14,86 @@ import L from 'leaflet';
   styleUrls: ['./house-manage.component.less']
 })
 export class HouseManageComponent implements OnInit {
+  pageTitle = "地图看房";
+
   qzBou: any;
   counties: any;
   towns: any;
   villages: any;
+  houses: any;
   map: any;
   boundaryLayer: any;
   labelMarkerLayer: any;
   boundaryStyles: any;
 
+  toolTipControl: any;
+  toolTipField: string;
+
   previousLevel = 6;
   searchBarWidth: number;
-  constructor(private mapService: MapService, private layoutService: LayoutService, private geoDataService: GeodataService) {
+
+  title = "信息";
+  state = {
+    modal1: false
+  };
+  footer = [
+    {
+      text: '确定',
+      onPress: () => {
+        console.log('ok');
+        this.state.modal1 = false;
+      }
+    }
+  ];
+  houseObj = {
+    County: "柯城区",
+    Town: "沟溪乡",
+    Village: "余东村",
+    Name: "余海标",
+    PeopleCount: "4",
+    Identification: "群众",
+    Economy: "一般户",
+    MP: "余东村",
+    Year: "2013年",
+    Floor: "1",
+    LandArea: "59.26",
+    ConstructArea: "59.26",
+    QZFS: "空斗",
+    Structure: "其他",
+    Usage: "自住",
+    Arround: "平地",
+    SZJC: "无加层",
+    Under: "2",
+    SW: "1",
+    DKB: "2",
+    XSNCKNJT: "0",
+    JDQK: "",
+    CDZL: "",
+    YDSX: "2",
+    JSGHSX: "2",
+    FWCQ: "1",
+    CJSJ: "2018/10/8 20:50",
+    CJR: "孙莉莉",
+    FWXZ: "",
+    WPYS: "",
+    FWWQYS: "",
+    QTLDLJ: "",
+    WQXT: "",
+    WQYS: "",
+    SFSYFZ: "",
+    SFSYFZFJS: "",
+    SFSYTDAZ: "",
+    SFJYWWBLJZ: "",
+    SWSYFZQT: "",
+    FKTJ: "",
+    SCYY: "",
+    TPSL: "2",
+    Status: "正常"
+  };
+
+  constructor(private titleService: Title, private mapService: MapService, private layoutService: LayoutService, private geoDataService: GeodataService,
+    private _pickerService: PickerService) {
+    this.titleService.setTitle("地图看房");
     this.searchBarWidth = layoutService.getActualScreenSize().width;
 
     geoDataService.getQZBou().subscribe(q => {
@@ -32,6 +103,9 @@ export class HouseManageComponent implements OnInit {
     geoDataService.getCountyBou().subscribe(q => this.counties = q);
     geoDataService.getTownBou().subscribe(q => this.towns = q);
     geoDataService.getVillageBou().subscribe(q => this.villages = q);
+    geoDataService.getFWMBou().subscribe(q => this.houses = q);
+
+    this.toolTipField = "户主姓名";
 
     //设置面样式
     this.boundaryStyles = {
@@ -50,21 +124,33 @@ export class HouseManageComponent implements OnInit {
         "weight": 1,
         "opacity": 0.5,
       },
+      fwStyle: {
+        "color": "#562C2C",
+        "weight": 1,
+        "opacity": 0.5,
+      }
     };
   }
 
   ngOnInit() {
     var that = this;
+
+
+
     that.map = that.mapService.createMap('map', [28.905527517199516, 118.50629210472107], that.previousLevel + 1);
     that.mapService.setMyLocation(that.map, [28.9731944495, 118.8546932766]);
     that.boundaryLayer = L.featureGroup().addTo(that.map);
     that.labelMarkerLayer = L.featureGroup().addTo(that.map);
+
+    that._createTooltipControl();
 
     //绑定地图缩放事件
     // 7 显示市 8-9 显示县 10-12 显示乡镇 
     that.map.on('zoomend', function (e) {
       that._zoomEndHandle();
     });
+
+
 
   }
 
@@ -73,13 +159,13 @@ export class HouseManageComponent implements OnInit {
     if (level == 7) {
       return "市";
     }
-    else if (level >= 8 && level <= 10) {
+    else if (level >= 8 && level <= 9) {
       return "县";
     }
-    else if (level >= 11 && level <= 13) {
+    else if (level >= 10 && level <= 12) {
       return "乡镇";
     }
-    else if (level >= 14 && level <= 16) {
+    else if (level >= 13 && level <= 16) {
       return "行政村";
     }
     else {
@@ -96,6 +182,10 @@ export class HouseManageComponent implements OnInit {
 
     var previousClass = that._mapLevelClassify(that.previousLevel);
     var currentClass = that._mapLevelClassify(level);
+
+    if (currentClass != "自然村" && that.toolTipControl.added) {
+      that.toolTipControl.remove();
+    }
 
     if (previousClass != currentClass) {
       that.boundaryLayer.clearLayers();
@@ -142,12 +232,16 @@ export class HouseManageComponent implements OnInit {
           break;
         case "乡镇":
           //#region 显示乡镇相关内容
+
           that.towns.features.forEach(element => {
 
-            var popup = L.popup({ closeButton: false, closeOnClick: false, closeOnEscapeKey: false, className: "qznfpopup" })
-              .setLatLng(element.properties.position)
-              .setContent('<span>' + element.properties.FNAME + '</span><br /><span>' + element.properties.count + '户</span>').addTo(that.labelMarkerLayer)
-              .openOn(that.map);
+            var countyCircleIcon = L.divIcon({
+              iconSize: [69, 46],
+              iconAnchor: [34.5, 56],
+              className: '',
+              html: '<div class="leaflet-popup qznfpopup leaflet-zoom-animated" style=""><div class="leaflet-popup-content-wrapper"><div class="leaflet-popup-content" style="width: 51px;"><span>' + element.properties.FNAME + '</span><br><span>' + element.properties.count + '户</span></div></div><div class="leaflet-popup-tip-container"><div class="leaflet-popup-tip"></div></div></div>'
+            });
+            L.marker(element.properties.position, { icon: countyCircleIcon }).addTo(that.labelMarkerLayer);
 
             //添加境界对象
             L.geoJSON(element, {
@@ -171,18 +265,111 @@ export class HouseManageComponent implements OnInit {
 
           that.villages.features.forEach(element => {
 
-            var popup = L.popup({ closeButton: false, closeOnClick: false, closeOnEscapeKey: false, className: "qznfpopup" })
-              .setLatLng([element.geometry.coordinates[1], element.geometry.coordinates[0]])
-              .setContent('<span>' + element.properties.FNAME + '</span><br /><span>' + element.properties.count + '户</span>').addTo(that.labelMarkerLayer)
-              .openOn(that.map);
+            var countyCircleIcon = L.divIcon({
+              iconSize: [69, 46],
+              iconAnchor: [34.5, 56],
+              className: '',
+              html: '<div class="leaflet-popup qznfpopup xzc leaflet-zoom-animated" style=""><div class="leaflet-popup-content-wrapper"><div class="leaflet-popup-content" style="width: 51px;"><span>' + element.properties.FNAME + '</span><br><span>' + element.properties.count + '户</span></div></div><div class="leaflet-popup-tip-container"><div class="leaflet-popup-tip"></div></div></div>'
+            });
+            L.marker([element.geometry.coordinates[1], element.geometry.coordinates[0]], { icon: countyCircleIcon }).addTo(that.labelMarkerLayer);
+
           });
           //#endregion   
 
           break;
+        case "自然村":
+          //#region 自然村
+          that.toolTipControl.addTo(that.map);
+          that.houses.features.forEach(element => {
+            var house = L.geoJSON(element, {
+              style: function (feature) {
+                return that.boundaryStyles.fwStyle;
+              }
+            }).bindTooltip(element.properties.Name, {
+              permanent: true
+            }).openTooltip().addTo(that.boundaryLayer).on('click', function () {
+              that.state.modal1 = true;
+              that.title = element.properties.Name + "农房信息";
+              that.houseObj = element.properties;
+            });
+
+            house.properties = element.properties;
+          });
+          //#endregion
+          break;
       }
-
-
     }
     that.previousLevel = level;
+  }
+
+  _createTooltipControl(): void {
+    var that = this;
+    //#region 创建标注显示按钮
+    L.Control.TooltipControl = L.Control.extend({
+      options: {
+        position: 'topright' //初始位置
+      },
+      initialize: function (options) {
+        L.Util.extend(this.options, options);
+
+      },
+      onAdd(map: any) {
+        //创建一个class为location的div
+        this._container = L.DomUtil.create('div', 'leaflet-control-location leaflet-control');
+        this._container.innerHTML = "<a><i class='iconfont icon-tooltiptext'></i></a>";
+        this._container.addEventListener('click', function () {
+
+          PickerService.showPicker({
+            title: "当前标注：" + that.toolTipField + "",
+            data: ['户主姓名', '家庭人数', '户主身份', '建设年份', '层数'],
+            value: [0, 1, 2, 3, 4],
+          }, function (val) {
+            if (that.toolTipField == val[0]) return;
+            that.toolTipField = val[0];
+
+            var field = "Name";
+            switch (that.toolTipField) {
+              case "户主姓名":
+                field = "Name";
+                break;
+              case "家庭人数":
+                field = "PeopleCount";
+                break;
+              case "户主身份":
+                field = "Identification";
+                break;
+              case "建设年份":
+                field = "Year";
+                break;
+              case "层数":
+                field = "Floor";
+                break;
+            }
+
+
+            //重新设置tooltip
+            that.boundaryLayer.eachLayer(function (house) {
+
+              console.log(house);
+              house.setTooltipContent(house.properties[field]);
+            });
+          }, function () { })
+        });
+
+        this.added = true;
+
+        return this._container;
+      },
+
+      onRemove(map: any) {
+        // Nothing to do here
+        this.added = false;
+      }
+    });
+    L.control.tooltipControl = function (opts) {
+      return new L.Control.TooltipControl(opts);
+    }
+
+    this.toolTipControl = L.control.tooltipControl({ position: 'topright' });
   }
 }

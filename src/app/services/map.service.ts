@@ -51,13 +51,13 @@ export class MapService {
       var province = L.tileLayer("http://srv{s}.zjditu.cn/ZJDOM_2D/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=imgmap&tileMatrixSet=default028mm&TileMatrix={z}&TileRow={y}&TileCol={x}&style=default&format=image/jpgpng", {
         subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
         minZoom: 7,
-        maxZoom: 17,
+        maxZoom: 19,
         zoomOffset: 1
       });
       var provinceAnno = L.tileLayer("http://srv{s}.zjditu.cn/ZJDOMANNO_2D/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=TDT_ZJIMGANNO&tileMatrixSet=default028mm&TileMatrix={z}&TileRow={y}&TileCol={x}&style=default&format=image/jpgpng", {
         subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
         minZoom: 7,
-        maxZoom: 17,
+        maxZoom: 19,
         zoomOffset: 1
       });
       layerGroup = L.layerGroup([province, provinceAnno]);
@@ -67,13 +67,13 @@ export class MapService {
       var province = L.tileLayer("http://srv{s}.zjditu.cn/ZJEMAP_2D/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=TDT_ZJEMAP&tileMatrixSet=default028mm&TileMatrix={z}&TileRow={y}&TileCol={x}&style=default&format=image/jpgpng", {
         subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
         minZoom: 7,
-        maxZoom: 17,
+        maxZoom: 19,
         zoomOffset: 1
       });
       var provinceAnno = L.tileLayer("http://srv{s}.zjditu.cn/ZJEMAPANNO_2D/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=TDT_ZJEMAPANNO&tileMatrixSet=default028mm&TileMatrix={z}&TileRow={y}&TileCol={x}&style=default&format=image/jpgpng", {
         subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
         minZoom: 7,
-        maxZoom: 17,
+        maxZoom: 19,
         zoomOffset: 1
       });
       layerGroup = L.layerGroup([province, provinceAnno]);
@@ -127,7 +127,7 @@ export class MapService {
       return new L.Control.Location(opts);
     }
 
-    var locationControl = L.control.location({ position: 'bottomleft' });
+    var locationControl = L.control.location({ position: 'bottomright' });
     //添加图例
     locationControl.addTo(map);
   }
