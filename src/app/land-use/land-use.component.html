@@ -24,6 +24,7 @@
   <Menu *ngIf="show && initData"
         class="multi-foo-menu"
         [data]="initData"
+        [value]=townsList
         [multiSelect]="true"
         (onChange)="onChange($event)"
         (onOk)="onOk($event)"
@@ -71,6 +72,15 @@ class="single-multi-foo-menu"
       <p>耕地提升后备资源面积：{{gdarea}}</p>
       <p>垦造耕地后备资源面积：{{kzarea}}</p>
       <hr style="height:1px;border:none;border-top:1px dashed #0066CC;" />  
+
+      <ImagePicker [files]="files"
+      [length]="6"
+      [selectable]="files.length < 7"
+      (onImageChange)="imageChange($event)"
+      (onImageClick)="imageClick($event)"
+      (onAddImageClick)="addImageClick($event)"
+      ></ImagePicker>
+
     </div>
   </CardBody>
   <CardFooter [content]="'footer content'" [extra]="footerExtra">

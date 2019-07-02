@@ -5,6 +5,15 @@ import { PickerService } from 'ng-zorro-antd-mobile';
 import { LayoutService } from '../services/layout.service';
 import { GeodataService } from '../services/geodata.service';
 
+const data = [
+  {
+    url: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg'
+  },
+  {
+    url: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg'
+  }
+];
+
 @Component({
   selector: 'app-land-use',
   templateUrl: './land-use.component.html',
@@ -21,6 +30,11 @@ export class LandUseComponent implements OnInit {
   labelMarkerLayer: any;
   delayData = [];
   countriesList=[];
+  townsList=[];
+  files = data.slice(0);
+  multiple = false;
+
+
   //村庄数据
   seasons = [
     {
@@ -184,28 +198,6 @@ export class LandUseComponent implements OnInit {
 
     that.boundaryLayer = L.featureGroup().addTo(that.map);
     that.labelMarkerLayer = L.featureGroup().addTo(that.map);
-  /*   that.mapheight= that.el.nativeElement.querySelector('.map').style.height;  
-    this.showCard=false;
-    that.mapheight="80%"; */
-/*     that.map.on('zoomend', function (e) {
-      var qzCircleIcon = L.divIcon({
-        iconSize: [70, 70],
-        className: 'circle city',
-        html: `<span>衢州市<br/>595553户</span>`
-      });
-      var qzMarker = L.marker([28.9731569040, 118.8547361920], { icon: qzCircleIcon }).addTo(that.labelMarkerLayer);
-      var qzData = that.qzBou;
-      console.log("333");
-      //添加境界对象
-      var qz = L.geoJSON(qzData, {
-        style: function (feature) {
-          return { color: feature.properties.color };
-        }
-      }).bindPopup(function (layer) {
-        return layer.feature.properties.FNAME;
-      }).addTo(that.boundaryLayer);
-
-    }) */
 
      
   
@@ -239,8 +231,13 @@ export class LandUseComponent implements OnInit {
       { value: this.value, data: this.seasons },
       result => {
 
+        
+        L.marker([28.982185050845146, 118.72790694236755]).addTo(this.map)
+       .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+        .openPopup();
         this.name = this.getResult(result);
         this.value = this.getValue(result);
+       
       },
       cancel => {
         console.log('cancel');
@@ -254,6 +251,38 @@ export class LandUseComponent implements OnInit {
 
 //复选框功能模块
   onChange(value) {
+    var that=this;
+    this.towns.features.forEach(element => {
+       if(value[1].indexOf(element.properties.id) != -1){
+        this.show = false;
+      /*   var polygon = L.polygon(element.geometry.coordinates, {color: 'red'}).addTo(this.map); */
+
+        L.geoJSON(element, {
+          style: function (feature) {
+            return { color: feature.properties.color };
+          }
+        }).addTo(this.boundaryLayer).on('click',function(){ 
+         
+       that.showCard=true;
+       that.mapheight="60%";
+       that.cardTitle=element.properties.FNAME;
+       that.czarea=element.properties.czarea;
+       that.fkarea=element.properties.fkarea;
+       that.gdarea=element.properties.gdarea;
+       that.kzarea=element.properties.kzarea;
+
+       //加载图片
+
+
+
+        });
+
+        this.countriesList.push(element.properties.id);
+       }
+    })
+
+
+
     console.log(value);
   }
 //乡镇选择器
@@ -327,6 +356,11 @@ export class LandUseComponent implements OnInit {
        that.fkarea=element.properties.fkarea;
        that.gdarea=element.properties.gdarea;
        that.kzarea=element.properties.kzarea;
+
+       //加载图片
+
+
+
         });
 
         this.countriesList.push(element.properties.id);
@@ -338,20 +372,38 @@ export class LandUseComponent implements OnInit {
 
 
   chooseCounty(){
-
+    this.showCard=false;
+    this.mapheight="100%";
     this.handleClick1();
   }
 
   chooseTown(){
-
+    this.showCard=false;
+    this.mapheight="100%";
     this.handleClick();
   }
   chooseVillage(){
+    this.showCard=false;
+    this.mapheight="100%";
     this.showPicker();
   }
 
 
- 
+  imageChange(params) {
+    const { files, type, index } = params;
+    this.files = files;
+  }
+
+  addImageClick(e) {
+    e.preventDefault();
+    this.files = this.files.concat({
+      url: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg'
+    });
+  }
+
+  imageClick(params) {
+    console.log(params);
+  }
 
  
 }
