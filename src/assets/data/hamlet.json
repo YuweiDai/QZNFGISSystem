@@ -1,0 +1,33 @@
+{
+	"type" : "FeatureCollection",
+	"name" : "Export_Output_2",
+	"features" : [
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"location" : [28.980403058230877,118.72820734977722]
+			},
+			"children":[
+              {
+				"name":"余东",
+				"location":[28.98306380957365,118.72830390930176],
+				"type":"适建村",
+				"people":690,
+				"hcount":167
+			  },
+			  {
+				"name":"上头山",
+				"location":[28.986743800342083,118.72575044631958],
+				"type":"限建村",
+				"people":121,
+				"hcount":45
+			  }
+			],
+			"properties" : {
+				"FNAME" : "余东村",
+				"count" : 2
+			}
+		}
+	]
+}

@@ -35,6 +35,14 @@ export class GeodataService {
       );
   }
 
+  getHamletBou (): Observable<any[]> {
+    return this.http.get<any[]>('assets/data/hamlet.json')
+      .pipe(
+        tap(_ => this.log('fetched heroes')),
+        catchError(this.handleError<any[]>('getHeroes', []))
+      );
+  }
+
   getVillageBou (): Observable<any[]> {
     return this.http.get<any[]>('assets/data/village.json')
       .pipe(

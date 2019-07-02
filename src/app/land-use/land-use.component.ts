@@ -5,6 +5,15 @@ import { PickerService } from 'ng-zorro-antd-mobile';
 import { LayoutService } from '../services/layout.service';
 import { GeodataService } from '../services/geodata.service';
 
+const data = [
+  {
+    url: '../../assets/content/1.jpg'
+  },
+  {
+    url: '../../assets/content/2.jpg'
+  }
+];
+
 @Component({
   selector: 'app-land-use',
   templateUrl: './land-use.component.html',
@@ -21,6 +30,13 @@ export class LandUseComponent implements OnInit {
   labelMarkerLayer: any;
   delayData = [];
   countriesList=[];
+  townsList=[];
+  files = data.slice(0);
+  multiple = false;
+  boundaryStyles: any;
+
+
+
   //村庄数据
   seasons = [
     {
@@ -168,6 +184,7 @@ export class LandUseComponent implements OnInit {
   fkarea="";
   gdarea="";
   kzarea="";
+  icon:any;
 
   constructor(private el:ElementRef,private _picker: PickerService,private mapService: MapService,private layoutService:LayoutService,private geoDataService: GeodataService) { 
     this.searchBarWidth=layoutService.getActualScreenSize().width;
@@ -175,6 +192,29 @@ export class LandUseComponent implements OnInit {
     geoDataService.getCountyBou().subscribe(q => this.counties = q);
     geoDataService.getTownBou().subscribe(q => this.towns = q);
 
+    this.icon = L.icon({
+      iconUrl: '../../assets/images/m1.png',
+      iconAnchor: [12, 12],
+  });
+
+    this.boundaryStyles = {
+      qzStyle: {
+        "color": "#15A4FF",
+        "weight": 3,
+        "opacity": 0.5,
+      },
+      countyStyle: {
+        "color": "#15A4FF",
+        "weight": 2,
+        "opacity": 0.5,
+      },
+      townStyle: {
+        "color": "#15A4FF",
+        "weight": 1,
+        "opacity": 0.5,
+      },
+    };
+  
   }
 
 
@@ -184,28 +224,6 @@ export class LandUseComponent implements OnInit {
 
     that.boundaryLayer = L.featureGroup().addTo(that.map);
     that.labelMarkerLayer = L.featureGroup().addTo(that.map);
-  /*   that.mapheight= that.el.nativeElement.querySelector('.map').style.height;  
-    this.showCard=false;
-    that.mapheight="80%"; */
-/*     that.map.on('zoomend', function (e) {
-      var qzCircleIcon = L.divIcon({
-        iconSize: [70, 70],
-        className: 'circle city',
-        html: `<span>衢州市<br/>595553户</span>`
-      });
-      var qzMarker = L.marker([28.9731569040, 118.8547361920], { icon: qzCircleIcon }).addTo(that.labelMarkerLayer);
-      var qzData = that.qzBou;
-      console.log("333");
-      //添加境界对象
-      var qz = L.geoJSON(qzData, {
-        style: function (feature) {
-          return { color: feature.properties.color };
-        }
-      }).bindPopup(function (layer) {
-        return layer.feature.properties.FNAME;
-      }).addTo(that.boundaryLayer);
-
-    }) */
 
      
   
@@ -238,9 +256,22 @@ export class LandUseComponent implements OnInit {
     PickerService.showPicker(
       { value: this.value, data: this.seasons },
       result => {
-
+       
+        L.marker([28.982185050845146, 118.72790694236755],{icon:this.icon}).addTo(this.map)
+       .bindPopup('<p>村庄建设用地面积：148.50亩</p><p>复垦为耕地面积：00.00亩</p><p>耕地提升后备资源面积：458.01亩</p><p>垦造耕地后备资源面积：623.14亩</p>')
+        .openPopup();
+        this.map.setView([28.982185050845146, 118.72790694236755],16);
         this.name = this.getResult(result);
         this.value = this.getValue(result);
+        this.showCard=true;
+        this.mapheight="60%";
+        this.cardTitle="余东村";
+        this.czarea="148.50亩";
+        this.fkarea="00.00亩";
+        this.gdarea="458.01亩";
+        this.kzarea="623.14亩";
+
+       
       },
       cancel => {
         console.log('cancel');
@@ -254,6 +285,38 @@ export class LandUseComponent implements OnInit {
 
 //复选框功能模块
   onChange(value) {
+    var that=this;
+    this.towns.features.forEach(element => {
+       if(value[1].indexOf(element.properties.id) != -1){
+        this.show = false;
+      /*   var polygon = L.polygon(element.geometry.coordinates, {color: 'red'}).addTo(this.map); */
+
+        L.geoJSON(element, {
+          style: function (feature) {
+            return { color: feature.properties.color };
+          }
+        }).addTo(this.boundaryLayer).on('click',function(){ 
+         
+       that.showCard=true;
+       that.mapheight="60%";
+       that.cardTitle=element.properties.FNAME;
+       that.czarea=element.properties.czarea;
+       that.fkarea=element.properties.fkarea;
+       that.gdarea=element.properties.gdarea;
+       that.kzarea=element.properties.kzarea;
+       that.map.fitBounds(element.geometry.coordinates);
+       //加载图片
+
+
+
+        });
+
+        this.countriesList.push(element.properties.id);
+       }
+    })
+
+
+
     console.log(value);
   }
 //乡镇选择器
@@ -327,6 +390,11 @@ export class LandUseComponent implements OnInit {
        that.fkarea=element.properties.fkarea;
        that.gdarea=element.properties.gdarea;
        that.kzarea=element.properties.kzarea;
+       that.map.setView(element.geometry.coordinates,15);
+       //加载图片
+
+
+
         });
 
         this.countriesList.push(element.properties.id);
@@ -338,20 +406,38 @@ export class LandUseComponent implements OnInit {
 
 
   chooseCounty(){
-
+    this.showCard=false;
+    this.mapheight="100%";
     this.handleClick1();
   }
 
   chooseTown(){
-
+    this.showCard=false;
+    this.mapheight="100%";
     this.handleClick();
   }
   chooseVillage(){
+    this.showCard=false;
+    this.mapheight="100%";
     this.showPicker();
   }
 
 
- 
+  imageChange(params) {
+    const { files, type, index } = params;
+    this.files = files;
+  }
+
+  addImageClick(e) {
+    e.preventDefault();
+    this.files = this.files.concat({
+      url: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg'
+    });
+  }
+
+  imageClick(params) {
+    console.log(params);
+  }
 
  
 }
