@@ -140,34 +140,4 @@ files = data.slice(0);
   imageClick(params) {
     console.log(params);
   }
-
-  showShareActionSheet = () => {
-    ActionSheetService.showShareActionSheetWithOptions(
-      {
-        options: this.dataList,
-        message: 'I am description, description, description',
-        locale: zh_CN
-      },
-      buttonIndex => {
-        return new Promise(resolve => {
-          ToastService.info('closed after 1000ms');
-          setTimeout(resolve, 1000);
-        });
-      }
-    );
-  }
-
-  showShareActionSheetMulpitleLine = () => {
-    const data = [[...this.dataList, this.dataList[2]], [this.dataList[3], this.dataList[4]]];
-    ActionSheetService.showShareActionSheetWithOptions(
-      {
-        options: data,
-        message: 'I am description, description, description',
-        locale: en_US
-      },
-      (buttonIndex, rowIndex) => {
-        console.log(buttonIndex);
-      }
-    );
-  }
 }
