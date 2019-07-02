@@ -81,13 +81,12 @@ export class HouseManageComponent implements OnInit {
     }
     else if (level >= 14 && level <= 16) {
       return "行政村";
-    }    
+    }
     else {
       return "自然村";
     }
 
   }
-
 
   _zoomEndHandle(): void {
     var that = this;

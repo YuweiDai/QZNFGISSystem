@@ -1,8 +1,9 @@
 import L from 'leaflet';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewEncapsulation,ElementRef } from '@angular/core';
 import { MapService } from '../services/map.service';
 import { PickerService } from 'ng-zorro-antd-mobile';
 import { LayoutService } from '../services/layout.service';
+import { GeodataService } from '../services/geodata.service';
 
 @Component({
   selector: 'app-land-use',
@@ -11,7 +12,16 @@ import { LayoutService } from '../services/layout.service';
 })
 export class LandUseComponent implements OnInit {
 
+  map: any;
+  qzBou: any;
+  counties: any;
+  towns:any;
+  searchBarWidth:number;
+  boundaryLayer: any;
+  labelMarkerLayer: any;
   delayData = [];
+  countriesList=[];
+  //村庄数据
   seasons = [
     {
       label: '柯城区',
@@ -53,17 +63,157 @@ export class LandUseComponent implements OnInit {
     }
   ];
   name = '选择';
-
   value = [];
+  //乡镇数据
+  initData: Array<any>;
+  show: boolean = false;
+  menuHeight: number = document.documentElement.clientHeight * 0.6;
+  dataMenu: Array<any> = [
+    {
+      value: '1',
+      label: '柯城区',
+      children: [
+        {
+          label: '航埠镇',
+          value: '1'
+        },
+        {
+          label: '沟溪乡',
+          value: '2'
+        },
+        {
+          label: '石梁镇',
+          value: '3'
+        },
+        {
+          label: '石室乡',
+          value: '4'
+        },
+        {
+          label: '华墅乡',
+          value: '5'
+        },
+        {
+          label: '姜家山乡',
+          value: '6'
+        }
+      ]
+    },
+    {
+      value: '2',
+      label: '衢江区',
+      children: [
+        {
+          label: '七里乡',
+          value: '1'
+        },
+        {
+          label: '九华乡',
+          value: '2'
+        },
+        {
+          label: '万田乡',
+          value: '3'
+        },
+        {
+          label: '杜泽镇',
+          value: '4'
+        }
+      ]
+    },
+    {
+      value: '3',
+      label: '常山县',
+      children: [
+        {
+          label: '天马镇',
+          value: '1'
+        }
+      ]
+    }
+  ];
+  //县区数据
+  initData1: Array<any>;
+  show1: boolean = false;
+  data1: Array<any> = [
+    {
+      value: '1',
+      label: '柯城区'
+    },
+    {
+      value: '2',
+      label: '衢江区'
+    },
+    {
+      value: '3',
+      label: '江山市'
+    },
+    {
+      value: '4',
+      label: '常山县'
+    },
+    {
+      value: '5',
+      label: '开化县'
+    },
+    {
+      value: '6',
+      label: '龙游县'
+    }
+  ];
+  showCard: boolean = false;
+  mapheight="100%";
+  cardTitle="";
+  czarea="";
+  fkarea="";
+  gdarea="";
+  kzarea="";
 
+  constructor(private el:ElementRef,private _picker: PickerService,private mapService: MapService,private layoutService:LayoutService,private geoDataService: GeodataService) { 
+    this.searchBarWidth=layoutService.getActualScreenSize().width;
+    geoDataService.getQZBou().subscribe(q => this.qzBou = q);
+    geoDataService.getCountyBou().subscribe(q => this.counties = q);
+    geoDataService.getTownBou().subscribe(q => this.towns = q);
 
-  constructor(private _picker: PickerService) {
-    setTimeout(() => {
-      //this.delayData = this.data;
-    }, 10000);
   }
 
- 
+
+  ngOnInit() {  
+    var that=this;
+    that.map =that.mapService.createMap('map',[28.905527517199516, 118.50629210472107],7);
+
+    that.boundaryLayer = L.featureGroup().addTo(that.map);
+    that.labelMarkerLayer = L.featureGroup().addTo(that.map);
+  /*   that.mapheight= that.el.nativeElement.querySelector('.map').style.height;  
+    this.showCard=false;
+    that.mapheight="80%"; */
+/*     that.map.on('zoomend', function (e) {
+      var qzCircleIcon = L.divIcon({
+        iconSize: [70, 70],
+        className: 'circle city',
+        html: `<span>衢州市<br/>595553户</span>`
+      });
+      var qzMarker = L.marker([28.9731569040, 118.8547361920], { icon: qzCircleIcon }).addTo(that.labelMarkerLayer);
+      var qzData = that.qzBou;
+      console.log("333");
+      //添加境界对象
+      var qz = L.geoJSON(qzData, {
+        style: function (feature) {
+          return { color: feature.properties.color };
+        }
+      }).bindPopup(function (layer) {
+        return layer.feature.properties.FNAME;
+      }).addTo(that.boundaryLayer);
+
+    }) */
+
+     
+  
+
+  }
+
+
+  
   getResult(result) {
     this.value = [];
     let temp = '';
@@ -83,12 +233,12 @@ export class LandUseComponent implements OnInit {
     });
     return value;
   }
-
+//村庄选择器
   showPicker() {
     PickerService.showPicker(
       { value: this.value, data: this.seasons },
       result => {
-        
+
         this.name = this.getResult(result);
         this.value = this.getValue(result);
       },
@@ -97,15 +247,111 @@ export class LandUseComponent implements OnInit {
 
       }
     );
+  };
+
+
+
+
+//复选框功能模块
+  onChange(value) {
+    console.log(value);
   }
-  // map: any;
-  //searchBarWidth:number;
- // constructor(private mapService: MapService,private layoutService:LayoutService) { 
-    //this.searchBarWidth=layoutService.getActualScreenSize().width;
+//乡镇选择器
+  handleClick() {
+    //e.preventDefault();
+    console.log(this.show);
+    this.show = !this.show;
+    if (!this.initData) {
+      setTimeout(() => {
+        this.initData = this.dataMenu;
+      }, 500);
+    }
+  }
 
-  //}
+  onMaskClick() {
+    this.show = false;
+  }
 
-  ngOnInit() {  
-   // this.map =this.mapService.createMap('map',[28.905527517199516, 118.50629210472107],7);
-  } 
+  onOk(value) {
+    console.log(value);
+    this.onCancel();
+  }
+
+  onCancel() {
+    this.show = false;
+  }
+
+
+  
+ 
+//县区选择器
+  handleClick1() {
+    this.show1 = !this.show1;
+    if (!this.initData1) {
+      setTimeout(() => {
+        this.initData1 = this.data1;
+      }, 500);
+    }
+  }
+
+  onMaskClick1() {
+    this.show1 = false;
+  }
+
+  onOk1(value) {
+    console.log(value);
+    this.onCancel1();
+  }
+
+  onCancel1() {
+    console.log('onCancel');
+    this.show1 = false;
+  }
+  onChange1(value) {
+  var that=this;
+    this.counties.features.forEach(element => {
+       if(value.indexOf(element.properties.id) != -1){
+        this.show1 = false;
+      /*   var polygon = L.polygon(element.geometry.coordinates, {color: 'red'}).addTo(this.map); */
+
+        L.geoJSON(element, {
+          style: function (feature) {
+            return { color: feature.properties.color };
+          }
+        }).addTo(this.boundaryLayer).on('click',function(){ 
+         
+       that.showCard=true;
+       that.mapheight="60%";
+       that.cardTitle=element.properties.FNAME;
+       that.czarea=element.properties.czarea;
+       that.fkarea=element.properties.fkarea;
+       that.gdarea=element.properties.gdarea;
+       that.kzarea=element.properties.kzarea;
+        });
+
+        this.countriesList.push(element.properties.id);
+       }
+    })
+
+    console.log(value);
+  }
+
+
+  chooseCounty(){
+
+    this.handleClick1();
+  }
+
+  chooseTown(){
+
+    this.handleClick();
+  }
+  chooseVillage(){
+    this.showPicker();
+  }
+
+
+ 
+
+ 
 }
