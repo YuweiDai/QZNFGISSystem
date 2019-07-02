@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import url("//at.alicdn.com/t/font_1267652_9i68tvxjil7.css");
+@import url("//at.alicdn.com/t/font_1267652_7t0xnsd3ozt.css");
 @import url("../node_modules/leaflet/dist/leaflet.css");
 
 body
@@ -170,7 +170,20 @@ body
     > .leaflet-popup-tip-container > .leaflet-popup-tip
     {        
         background-color: #15A4FF;
+    }   
+}
+
+.qznfpopup.xzc
+{
+    > .leaflet-popup-content-wrapper
+    {
+        background-color: #FF8040;
     }
+
+    > .leaflet-popup-tip-container > .leaflet-popup-tip
+    {        
+        background-color: #FF8040;
+    }   
 }
 
 .leaflet-top {
@@ -254,4 +267,25 @@ body
     border: 1px solid #ddd;
     border-radius: 5px;
     margin: 0 15px 15px 15px;
+}
+
+.infoList
+{
+    .info-row
+    {
+        height: 30px;
+        border-bottom: 1px solid silver;
+        padding: 5px;
+        text-align: left;
+        .infoLabel
+        {        
+            margin-right: 10px;            
+        }
+        .infoContent
+        {
+            text-emphasis: emphasis;
+        }        
+    }
+
+
 }

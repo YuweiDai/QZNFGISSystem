@@ -4,6 +4,148 @@
 
 <div class="searchContainer" [ngStyle]="{'width.px': searchBarWidth}">
   <div style="border-bottom: 1px solid #ddd;">
-    <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8" ></SearchBar>
+    <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8"></SearchBar>
   </div>
 </div>
+
+
+<Modal [(ngModel)]="this.state.modal1" [transparent]="true" [title]="title" [footer]="footer">
+
+
+  <div [ngStyle]="{ 'height.px': 300, overflow: 'scroll' }">
+
+    <div class="infoList">
+      <div class="info-row">
+        <span class="infoLabel">县市区：</span>
+        <span class="infoContent">{{houseObj.County}}</span>
+      </div>
+      <div class="info-row">
+        <span class="infoLabel">乡镇：</span>
+        <span class="infoContent">{{houseObj.Town}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">行政村：</span>
+        <span class="infoContent">{{houseObj.Village}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">人数：</span>
+        <span class="infoContent">{{houseObj.PeopleCount}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">身份：</span>
+        <span class="infoContent">{{houseObj.Identification}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">经济：</span>
+        <span class="infoContent">{{houseObj.Economy}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">门牌：</span>
+        <span class="infoContent">{{houseObj.MP}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">年份：</span>
+        <span class="infoContent">{{houseObj.Year}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">层数：</span>
+        <span class="infoContent">{{houseObj.Floor}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">占地面积：</span>
+        <span class="infoContent">{{houseObj.LandArea}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">建筑面积：</span>
+        <span class="infoContent">{{houseObj.ConstructArea}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">建筑方式：</span>
+        <span class="infoContent">{{houseObj.QZFS}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">结构：</span>
+        <span class="infoContent">{{houseObj.Structure}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">占地面积：</span>
+        <span class="infoContent">{{houseObj.LandArea}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">建筑面积：</span>
+        <span class="infoContent">{{houseObj.ConstructArea}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">建筑方式：</span>
+        <span class="infoContent">{{houseObj.QZFS}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">结构：</span>
+        <span class="infoContent">{{houseObj.Structure}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">占地面积：</span>
+        <span class="infoContent">{{houseObj.LandArea}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">建筑面积：</span>
+        <span class="infoContent">{{houseObj.ConstructArea}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">建筑方式：</span>
+        <span class="infoContent">{{houseObj.QZFS}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">结构：</span>
+        <span class="infoContent">{{houseObj.Structure}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">占地面积：</span>
+        <span class="infoContent">{{houseObj.LandArea}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">建筑面积：</span>
+        <span class="infoContent">{{houseObj.ConstructArea}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">建筑方式：</span>
+        <span class="infoContent">{{houseObj.QZFS}}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="infoLabel">结构：</span>
+        <span class="infoContent">{{houseObj.Structure}}</span>
+      </div>
+    </div>
+
+  </div>
+
+
+</Modal>
+
+<div style="display:none" Button (onClick)="showActionSheet(message)">showActionSheet</div>
+<ng-template #message>
+  <div class="am-action-sheet-message">123</div>
+</ng-template>
