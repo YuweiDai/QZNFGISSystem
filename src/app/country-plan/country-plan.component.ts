@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import { Component,OnInit } from '@angular/core';
-import { ActionSheetService, ToastService } from 'ng-zorro-antd-mobile';
-import { en_US, ru_RU, zh_CN, sv_SE, da_DK } from 'ng-zorro-antd-mobile';
-=======
 import { Component, OnInit } from '@angular/core';
 import { MapService } from '../services/map.service';
 import { GeodataService } from '../services/geodata.service';
@@ -19,7 +14,6 @@ const data = [
     url: '../../assets/content/5.jpg'
   }
 ];
->>>>>>> 8aa249185a45ae5daaed57e65bd99a8ec6cd92cf
 
 @Component({
   selector: 'app-country-plan',
@@ -27,50 +21,6 @@ const data = [
   styleUrls: ['./country-plan.component.less']
 })
 export class CountryPlanComponent implements OnInit {
-<<<<<<< HEAD
-  ngOnInit(): void {
-
-  }
-
-  dataList = [
-    { url: 'OpHiXAcYzmPQHcdlLFrc', title: '发送给朋友' },
-    { url: 'wvEzCMiDZjthhAOcwTOu', title: '新浪微博' },
-    { url: 'cTTayShKtEIdQVEMuiWt', title: '生活圈' },
-    { url: 'umnHwvEgSyQtXlZjNJTt', title: '微信好友' },
-    { url: 'SxpunpETIwdxNjcJamwB', title: 'QQ' }
-  ].map(obj => ({
-    icon: `<img src="https://gw.alipayobjects.com/zos/rmsportal/${obj.url}.png" style="width:36px"/>`,
-    title: obj.title
-  }));
-
-  constructor(private _actionSheet: ActionSheetService, private _toast: ToastService) {}
-
-  showActionSheet = message => {
-    const BUTTONS = ['Operation1', 'Operation2', 'Operation2', 'Delete', 'Cancel'];
-    ActionSheetService.showActionSheetWithOptions(
-      {
-        options: BUTTONS,
-        cancelButtonIndex: BUTTONS.length - 1,
-        destructiveButtonIndex: BUTTONS.length - 2,
-        title: 'title',
-        message: message,
-        maskClosable: true
-      },
-      buttonIndex => {
-        console.log(buttonIndex);
-
-          ActionSheetService.showActionSheetWithOptions(
-      {
-        options: ['Operation111', 'Operation2222', 'Operation3332', 'Delete', 'Cancel'],
-        cancelButtonIndex: BUTTONS.length - 1,
-        destructiveButtonIndex: BUTTONS.length - 2,
-        title: 'title',
-        message: message,
-        maskClosable: true
-      });
-      }
-    );
-=======
 map:any;
 hamlets:any;
 boundaryLayer: any;
@@ -189,7 +139,6 @@ files = data.slice(0);
 
   imageClick(params) {
     console.log(params);
->>>>>>> 8aa249185a45ae5daaed57e65bd99a8ec6cd92cf
   }
 
   showShareActionSheet = () => {
