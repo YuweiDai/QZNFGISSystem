@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import { Component, OnInit,ViewEncapsulation,ElementRef } from '@angular/core';
+import { Component, OnInit,ViewEncapsulation,ElementRef,TemplateRef } from '@angular/core';
 import { MapService } from '../services/map.service';
 import { PickerService } from 'ng-zorro-antd-mobile';
 import { LayoutService } from '../services/layout.service';
@@ -34,6 +34,10 @@ export class LandUseComponent implements OnInit {
   files = data.slice(0);
   multiple = false;
   boundaryStyles: any;
+  iconData={
+    icon: "cross-circle",
+    text: ""
+  };
 
 
 
@@ -224,8 +228,29 @@ export class LandUseComponent implements OnInit {
 
     that.boundaryLayer = L.featureGroup().addTo(that.map);
     that.labelMarkerLayer = L.featureGroup().addTo(that.map);
+    that.addLocationControl(that.map);
+    that.addLocationControl(that.map);
+
+    setTimeout(()=>{
+
+      var qzData = that.qzBou;
+      //添加境界对象
+      var qz = L.geoJSON(qzData, {
+        style: function (feature) {
+          return that.boundaryStyles.qzStyle;
+        }
+      }).addTo(that.boundaryLayer);
+        that.showCard=true;
+        that.mapheight="60%";
+        that.cardTitle=qzData.features[0].properties.FNAME;
+        that.czarea=qzData.features[0].properties.czarea;
+        that.fkarea=qzData.features[0].properties.fkarea;
+        that.gdarea=qzData.features[0].properties.gdarea;
+        that.kzarea=qzData.features[0].properties.kzarea;
 
      
+
+    },500)
   
 
   }
@@ -295,7 +320,7 @@ export class LandUseComponent implements OnInit {
           style: function (feature) {
             return { color: feature.properties.color };
           }
-        }).addTo(this.boundaryLayer).on('click',function(){ 
+        }).addTo(this.boundaryLayer);
          
        that.showCard=true;
        that.mapheight="60%";
@@ -305,11 +330,7 @@ export class LandUseComponent implements OnInit {
        that.gdarea=element.properties.gdarea;
        that.kzarea=element.properties.kzarea;
        that.map.fitBounds(element.geometry.coordinates);
-       //加载图片
-
-
-
-        });
+   
 
         this.countriesList.push(element.properties.id);
        }
@@ -381,7 +402,7 @@ export class LandUseComponent implements OnInit {
           style: function (feature) {
             return { color: feature.properties.color };
           }
-        }).addTo(this.boundaryLayer).on('click',function(){ 
+        }).addTo(this.boundaryLayer)
          
        that.showCard=true;
        that.mapheight="60%";
@@ -391,11 +412,7 @@ export class LandUseComponent implements OnInit {
        that.gdarea=element.properties.gdarea;
        that.kzarea=element.properties.kzarea;
        that.map.setView(element.geometry.coordinates,15);
-       //加载图片
 
-
-
-        });
 
         this.countriesList.push(element.properties.id);
        }
@@ -439,5 +456,46 @@ export class LandUseComponent implements OnInit {
     console.log(params);
   }
 
- 
+  callBack(){
+    this.showCard=false;
+    this.mapheight="100%";
+    this.boundaryLayer.clearLayers();
+  }
+  //添加图标
+  addLocationControl(map: any): any {
+    var that=this;
+    L.Control.Location = L.Control.extend({
+      options: {
+        position: 'topright' //初始位置
+      },
+      initialize: function (options) {
+        L.Util.extend(this.options, options);
+
+      },
+      onAdd (map:any) {
+        //创建一个class为location的div
+        this._container = L.DomUtil.create('div', 'leaflet-control-chengshi leaflet-control');
+        this._container.innerHTML = "<a><i class='iconfont icon-chengshi'></i></a>";
+        this._container.addEventListener('click', function () {
+        //  var position = that.locationMarker.getLatLng();
+         // map.flyTo(position, 17);
+        });
+
+        return this._container;
+      },
+
+      onRemove (map:any) {
+        // Nothing to do here
+      }
+    });
+    L.control.location = function (opts) {
+      return new L.Control.Location(opts);
+    }
+
+    var locationControl = L.control.location({ position: 'bottomleft' });
+    //添加图例
+    locationControl.addTo(map);
+  }
+
+
 }

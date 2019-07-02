@@ -57,12 +57,12 @@ class="single-multi-foo-menu"
 
 <Card [full]="true" *ngIf="showCard" style="position: absolute;top:60%;height: 40%;width: 100%">
   <CardHeader [title]="cardTitle"
-              [thumb]="'https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg'"
+              [thumb]=""
               [thumbStyle]="thumbStyle"
               [extra]="extra"
   >
     <ng-template #extra>
-      <span>土地资源信息</span>
+        <img src="../../assets/images/return.png" (click)="callBack()" />
     </ng-template>
   </CardHeader>
   <CardBody>

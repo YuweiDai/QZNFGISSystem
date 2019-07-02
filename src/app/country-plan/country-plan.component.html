@@ -2,14 +2,20 @@
     <div id="map" class="map" style="position: absolute;width: 100%;" [ngStyle]="{'height': mapheight}"></div>
   </div>
 
+  <div class="searchContainer" [ngStyle]="{'width.px': searchBarWidth}">
+      <div style="border-bottom: 1px solid #ddd;">
+        <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8" ></SearchBar>
+      </div>
+    </div>
+
   <Card [full]="true" *ngIf="showCard" style="position: absolute;top:60%;height: 40%;width: 100%">
       <CardHeader [title]="cardTitle"
-                  [thumb]="'https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg'"
+                  [thumb]=""
                   [thumbStyle]="thumbStyle"
                   [extra]="extra"
       >
         <ng-template #extra>
-          <span>布点规划信息</span>
+            <img src="../../assets/images/return.png" (click)="callBack()" />
         </ng-template>
       </CardHeader>
       <CardBody>
