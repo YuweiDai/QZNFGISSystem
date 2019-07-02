@@ -7,10 +7,10 @@ import { GeodataService } from '../services/geodata.service';
 
 const data = [
   {
-    url: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg'
+    url: '../../assets/content/1.jpg'
   },
   {
-    url: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg'
+    url: '../../assets/content/2.jpg'
   }
 ];
 
@@ -33,6 +33,8 @@ export class LandUseComponent implements OnInit {
   townsList=[];
   files = data.slice(0);
   multiple = false;
+  boundaryStyles: any;
+
 
 
   //村庄数据
@@ -182,6 +184,7 @@ export class LandUseComponent implements OnInit {
   fkarea="";
   gdarea="";
   kzarea="";
+  icon:any;
 
   constructor(private el:ElementRef,private _picker: PickerService,private mapService: MapService,private layoutService:LayoutService,private geoDataService: GeodataService) { 
     this.searchBarWidth=layoutService.getActualScreenSize().width;
@@ -189,6 +192,29 @@ export class LandUseComponent implements OnInit {
     geoDataService.getCountyBou().subscribe(q => this.counties = q);
     geoDataService.getTownBou().subscribe(q => this.towns = q);
 
+    this.icon = L.icon({
+      iconUrl: '../../assets/images/m1.png',
+      iconAnchor: [12, 12],
+  });
+
+    this.boundaryStyles = {
+      qzStyle: {
+        "color": "#15A4FF",
+        "weight": 3,
+        "opacity": 0.5,
+      },
+      countyStyle: {
+        "color": "#15A4FF",
+        "weight": 2,
+        "opacity": 0.5,
+      },
+      townStyle: {
+        "color": "#15A4FF",
+        "weight": 1,
+        "opacity": 0.5,
+      },
+    };
+  
   }
 
 
@@ -230,13 +256,21 @@ export class LandUseComponent implements OnInit {
     PickerService.showPicker(
       { value: this.value, data: this.seasons },
       result => {
-
-        
-        L.marker([28.982185050845146, 118.72790694236755]).addTo(this.map)
-       .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+       
+        L.marker([28.982185050845146, 118.72790694236755],{icon:this.icon}).addTo(this.map)
+       .bindPopup('<p>村庄建设用地面积：148.50亩</p><p>复垦为耕地面积：00.00亩</p><p>耕地提升后备资源面积：458.01亩</p><p>垦造耕地后备资源面积：623.14亩</p>')
         .openPopup();
+        this.map.setView([28.982185050845146, 118.72790694236755],16);
         this.name = this.getResult(result);
         this.value = this.getValue(result);
+        this.showCard=true;
+        this.mapheight="60%";
+        this.cardTitle="余东村";
+        this.czarea="148.50亩";
+        this.fkarea="00.00亩";
+        this.gdarea="458.01亩";
+        this.kzarea="623.14亩";
+
        
       },
       cancel => {
@@ -270,7 +304,7 @@ export class LandUseComponent implements OnInit {
        that.fkarea=element.properties.fkarea;
        that.gdarea=element.properties.gdarea;
        that.kzarea=element.properties.kzarea;
-
+       that.map.fitBounds(element.geometry.coordinates);
        //加载图片
 
 
@@ -356,7 +390,7 @@ export class LandUseComponent implements OnInit {
        that.fkarea=element.properties.fkarea;
        that.gdarea=element.properties.gdarea;
        that.kzarea=element.properties.kzarea;
-
+       that.map.setView(element.geometry.coordinates,15);
        //加载图片
 
 

@@ -1,3 +1,39 @@
-<p>
-  country-plan works!
-</p>
+<div class="mapContainer">
+    <div id="map" class="map" style="position: absolute;width: 100%;" [ngStyle]="{'height': mapheight}"></div>
+  </div>
+
+  <Card [full]="true" *ngIf="showCard" style="position: absolute;top:60%;height: 40%;width: 100%">
+      <CardHeader [title]="cardTitle"
+                  [thumb]="'https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg'"
+                  [thumbStyle]="thumbStyle"
+                  [extra]="extra"
+      >
+        <ng-template #extra>
+          <span>布点规划信息</span>
+        </ng-template>
+      </CardHeader>
+      <CardBody>
+        <div>
+          <p>户数：{{hcount}}</p>
+          <p>人口：{{people}}</p>
+          <p>规划管理类型:{{type}}</p>
+          <p>简介：村庄规划用地范围是*亩，村庄描述等等</p>
+          <p></p>
+          <hr style="height:1px;border:none;border-top:1px dashed #0066CC;" />  
+    
+          <ImagePicker [files]="files"
+          [length]="6"
+          [selectable]="files.length < 7"
+          (onImageChange)="imageChange($event)"
+          (onImageClick)="imageClick($event)"
+          (onAddImageClick)="addImageClick($event)"
+          ></ImagePicker>
+    
+        </div>
+      </CardBody>
+      <CardFooter [content]="'衢州市农业农村局'" [extra]="footerExtra">
+        <ng-template #footerExtra>
+          <div>© 2019 Copyright.</div>
+        </ng-template>
+      </CardFooter>
+    </Card>
