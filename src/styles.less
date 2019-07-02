@@ -51,6 +51,7 @@ body
     margin-top:14px;
 }
 
+//region 定位
 .mapboxgl-marker {
     position: absolute;
     top: 0;
@@ -148,6 +149,28 @@ body
 
 .mapboxgl-user-location-dot-stale::after {
     display: none;
+}
+
+//#endregion
+
+.qznfpopup
+{
+    > .leaflet-popup-content-wrapper
+    {
+        color: white;
+        text-align: center;
+        background-color: #15A4FF;
+
+        .leaflet-popup-content {
+            margin: 6px 8px;
+            line-height: 1.4;
+        }
+    }
+
+    > .leaflet-popup-tip-container > .leaflet-popup-tip
+    {        
+        background-color: #15A4FF;
+    }
 }
 
 .leaflet-top {

@@ -1,0 +1,186 @@
+{
+	"type" : "FeatureCollection",
+	"name" : "行政村",
+	"features" : [
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.727029534, 28.954347829 ]
+			},
+			"properties" : {
+				"FNAME" : "沟溪村",
+				"count" : 479,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.736066485, 28.957680243 ]
+			},
+			"properties" : {
+				"FNAME" : "高山窑村",
+				"count" : 502,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.751525771, 28.957895691 ]
+			},
+			"properties" : {
+				"FNAME" : "上叶",
+				"count" : 462,
+				"USOURCE" : "服务库20140429"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.725347863, 28.960710764 ]
+			},
+			"properties" : {
+				"FNAME" : "上余坂村",
+				"count" : 297,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.734480302, 28.966565037 ]
+			},
+			"properties" : {
+				"FNAME" : "后坞村",
+				"count" : 406,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.716266714, 28.97009287 ]
+			},
+			"properties" : {
+				"FNAME" : "洞头村",
+				"count" : 255,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.728296656, 28.980225621 ]
+			},
+			"properties" : {
+				"FNAME" : "余东村",
+				"count" : 301,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.725304842, 28.983622429 ]
+			},
+			"properties" : {
+				"FNAME" : "余西村",
+				"count" : 278,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.746894845, 28.984335515 ]
+			},
+			"properties" : {
+				"FNAME" : "宋家垄村",
+				"count" : 184,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.701130981, 28.988848895 ]
+			},
+			"properties" : {
+				"FNAME" : "五十都村",
+				"count" : 449,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.740776329, 28.995273539 ]
+			},
+			"properties" : {
+				"FNAME" : "斗目垅村",
+				"count" : 271,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.714636684, 28.995621011 ]
+			},
+			"properties" : {
+				"FNAME" : "直力村",
+				"count" : 255,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.702192352, 28.995780031 ]
+			},
+			"properties" : {
+				"FNAME" : "欣源村",
+				"count" : 301,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.703697255, 29.003644926 ]
+			},
+			"properties" : {
+				"FNAME" : "河山村",
+				"count" : 435,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		},
+		{
+			"type" : "Feature",
+			"geometry" : {
+				"type" : "Point",
+				"coordinates" : [ 118.724328842, 29.009467403 ]
+			},
+			"properties" : {
+				"FNAME" : "碗东村",
+				"count" : 208,
+				"USOURCE" : "衢州1∶2000入库数据"
+			}
+		}
+	]
+}
