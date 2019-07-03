@@ -109,13 +109,13 @@ searchBarWidth: number;
             var icon;
             switch(hamlet.type){
              case "适建村":
-             icon=that.m2;
+             icon=that.m1;
              break;
              case "限建村":
-             icon=that.m3;
+             icon=that.m2;
              break;
              case "禁建村":
-             icon=that.m1;
+             icon=that.m3;
              break;
             };
              L.marker(hamlet.location,{ icon:icon})
