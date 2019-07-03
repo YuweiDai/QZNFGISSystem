@@ -23,6 +23,7 @@ const data = [
   styleUrls: ['./country-plan.component.less']
 })
 export class CountryPlanComponent implements OnInit {
+<<<<<<< HEAD
   map: any;
   hamlets: any;
   boundaryLayer: any;
@@ -43,6 +44,27 @@ export class CountryPlanComponent implements OnInit {
   constructor(private mapService: MapService, private geoDataService: GeodataService, private layoutService: LayoutService
     , private titleService: Title) {
     this.titleService.setTitle("乡村规划");
+=======
+map:any;
+hamlets:any;
+boundaryLayer: any;
+labelMarkerLayer: any;
+boundaryStyles: any;
+mz:any;
+m1:any;
+m2:any;
+m3:any;
+showCard=false;
+mapheight="100%";
+hcount="";
+people="";
+type="";
+cardTitle="";
+files = data.slice(0);
+searchBarWidth: number;
+
+  constructor(private mapService: MapService,private geoDataService: GeodataService, private layoutService: LayoutService) { 
+>>>>>>> c9f0815962de761c60b4ae6262128e755d63c248
     this.searchBarWidth = layoutService.getActualScreenSize().width;
     geoDataService.getHamletBou().subscribe(q => this.hamlets = q);
     this.boundaryStyles = {
@@ -122,6 +144,7 @@ export class CountryPlanComponent implements OnInit {
                 icon = that.m3;
                 break;
             };
+<<<<<<< HEAD
             L.marker(hamlet.location, { icon: icon })
               .bindPopup("<p>" + hamlet.name + "(" + hamlet.type + ")</p><p>户数：" + hamlet.hcount + "</p><p>人口：" + hamlet.people + "</p><p>描述：暂无描述</p>")
               .addTo(that.boundaryLayer).on('click', function () {
@@ -136,6 +159,23 @@ export class CountryPlanComponent implements OnInit {
 
 
     })
+=======
+             L.marker(hamlet.location,{ icon:icon})
+       .bindPopup("<p>"+hamlet.name +"("+ hamlet.type+")</p><p>户数："+ hamlet.hcount+"</p><p>人口："+ hamlet.people+"</p><p>描述：暂无描述</p>")
+        .addTo(that.boundaryLayer).on('click',function(){
+          that.showCard=true;
+          that.mapheight="60%";
+          that.cardTitle=hamlet.name;
+          that.hcount=hamlet.hcount;
+          that.people=hamlet.people;
+          that.type=hamlet.type;
+        })
+      });
+       });
+
+      
+   })
+>>>>>>> c9f0815962de761c60b4ae6262128e755d63c248
 
   }
 
