@@ -11,24 +11,27 @@
 <div class="mapContainer">
   <div id="map" class="map" style="position: absolute;width: 100%;" [ngStyle]="{'height': mapheight}"></div>
 </div>
+<div class="searchContainer" [ngStyle]="{'width.px': searchBarWidth}">
+    <div style="border-bottom: 1px solid #ddd;">
+      <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8"></SearchBar>
+    </div>
+  </div>
 
 <!-- <SegmentedControl style="top:3%;position: absolute;" [values]="['县区选择器', '乡镇选择器', '村庄选择器']" (onChange)="choose($event)"
 ></SegmentedControl>
  -->
-<div Button [type]="'primary'" [inline]="true" [size]="'small'" (click)="chooseCounty()" style="position:absolute;width: 100px;top:10px;z-index: 1000;">县区选择</div>
+<!-- <div Button [type]="'primary'" [inline]="true" [size]="'small'" (click)="chooseCounty()" style="position:absolute;width: 100px;top:10px;z-index: 1000;">县区选择</div>
 <div Button [type]="'primary'" [inline]="true" [size]="'small'" (click)="chooseTown()"style="position:absolute;width: 100px;top:10px;left: 110px;z-index: 1000;">乡镇选择</div>
 <div Button [type]="'primary'" [inline]="true" [size]="'small'" (click)="chooseVillage()" style="position:absolute;width: 100px;top:10px;left: 220px;z-index: 1000;">村庄选择</div>
 
-
+ -->
 <div [ngClass]="[show ? 'multi-menu-active' : '']">
   <Menu *ngIf="show && initData"
         class="multi-foo-menu"
         [data]="initData"
-        [value]=townsList
+        [value]="townsList"
         [multiSelect]="true"
         (onChange)="onChange($event)"
-        (onOk)="onOk($event)"
-        (onCancel)="onCancel()"
         [height]="menuHeight">
   </Menu>
   <div *ngIf="show && !initData" style="width: 100% ;height: 300px; display: flex; justify-content: center; align-items: center">

@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import { Component, OnInit,ViewEncapsulation,ElementRef,TemplateRef } from '@angular/core';
+import { Component,OnInit,ViewEncapsulation,ElementRef,TemplateRef } from '@angular/core';
 import { MapService } from '../services/map.service';
 import { PickerService } from 'ng-zorro-antd-mobile';
 import { LayoutService } from '../services/layout.service';
@@ -31,6 +31,7 @@ export class LandUseComponent implements OnInit {
   delayData = [];
   countriesList=[];
   townsList=[];
+  townList=[];
   files = data.slice(0);
   multiple = false;
   boundaryStyles: any;
@@ -218,6 +219,8 @@ export class LandUseComponent implements OnInit {
         "opacity": 0.5,
       },
     };
+    this.townsList.push("1");
+    this.townsList.push(this.townList);
   
   }
 
@@ -228,8 +231,10 @@ export class LandUseComponent implements OnInit {
 
     that.boundaryLayer = L.featureGroup().addTo(that.map);
     that.labelMarkerLayer = L.featureGroup().addTo(that.map);
-    that.addLocationControl(that.map);
-    that.addLocationControl(that.map);
+    that.addLocationControl(that.map,"Location");
+    that.addLocationControl(that.map,"kangjuxiangcun");
+    that.addLocationControl(that.map,"chengshijianshe");
+    that.addLocationControl(that.map,"chengshiicon");
 
     setTimeout(()=>{
 
@@ -240,13 +245,23 @@ export class LandUseComponent implements OnInit {
           return that.boundaryStyles.qzStyle;
         }
       }).addTo(that.boundaryLayer);
-        that.showCard=true;
-        that.mapheight="60%";
-        that.cardTitle=qzData.features[0].properties.FNAME;
-        that.czarea=qzData.features[0].properties.czarea;
-        that.fkarea=qzData.features[0].properties.fkarea;
-        that.gdarea=qzData.features[0].properties.gdarea;
-        that.kzarea=qzData.features[0].properties.kzarea;
+
+       document.getElementById("map").style.height ="60%";
+       this.map.invalidateSize(true);
+       var bounds= qz.getBounds();
+       
+
+       this.map.fitBounds(bounds);  
+
+
+       that.showCard=true;
+       that.cardTitle=qzData.features[0].properties.FNAME;
+       that.czarea=qzData.features[0].properties.czarea;
+       that.fkarea=qzData.features[0].properties.fkarea;
+       that.gdarea=qzData.features[0].properties.gdarea;
+       that.kzarea=qzData.features[0].properties.kzarea;
+
+
 
      
 
@@ -278,6 +293,7 @@ export class LandUseComponent implements OnInit {
   }
 //村庄选择器
   showPicker() {
+    this.boundaryLayer.clearLayers();
     PickerService.showPicker(
       { value: this.value, data: this.seasons },
       result => {
@@ -314,25 +330,50 @@ export class LandUseComponent implements OnInit {
     this.towns.features.forEach(element => {
        if(value[1].indexOf(element.properties.id) != -1){
         this.show = false;
-      /*   var polygon = L.polygon(element.geometry.coordinates, {color: 'red'}).addTo(this.map); */
+     var polygon = L.polygon(element.geometry.coordinates, {color: 'red'}); 
 
         L.geoJSON(element, {
           style: function (feature) {
             return { color: feature.properties.color };
           }
-        }).addTo(this.boundaryLayer);
+        }).addTo(this.boundaryLayer).addTo(this.boundaryLayer).on('click',function(){
+          var polygon1 = L.polygon(element.geometry.coordinates, {color: 'red'}); 
+          var bounds= polygon1._bounds;
+          var southWest = L.latLng(bounds._southWest.lng, bounds._southWest.lat),
+          northEast = L.latLng(bounds._northEast.lng, bounds._northEast.lat),
+          latLngBounds = L.latLngBounds(southWest, northEast);
+   
+          that.map.fitBounds(latLngBounds);  
+   
+   
+          that.showCard=true;
+          that.cardTitle=element.properties.FNAME;
+          that.czarea=element.properties.czarea;
+          that.fkarea=element.properties.fkarea;
+          that.gdarea=element.properties.gdarea;
+          that.kzarea=element.properties.kzarea;
+   
+           });
          
+       document.getElementById("map").style.height ="60%";
+       this.map.invalidateSize(true);
+       var bounds= polygon._bounds;
+       var southWest = L.latLng(bounds._southWest.lng, bounds._southWest.lat),
+       northEast = L.latLng(bounds._northEast.lng, bounds._northEast.lat),
+       latLngBounds = L.latLngBounds(southWest, northEast);
+
+       this.map.fitBounds(latLngBounds);  
+
+
        that.showCard=true;
-       that.mapheight="60%";
        that.cardTitle=element.properties.FNAME;
        that.czarea=element.properties.czarea;
        that.fkarea=element.properties.fkarea;
        that.gdarea=element.properties.gdarea;
        that.kzarea=element.properties.kzarea;
-       that.map.fitBounds(element.geometry.coordinates);
-   
 
-        this.countriesList.push(element.properties.id);
+       this.townList.push(element.properties.id);
+
        }
     })
 
@@ -343,7 +384,7 @@ export class LandUseComponent implements OnInit {
 //乡镇选择器
   handleClick() {
     //e.preventDefault();
-    console.log(this.show);
+  
     this.show = !this.show;
     if (!this.initData) {
       setTimeout(() => {
@@ -363,6 +404,11 @@ export class LandUseComponent implements OnInit {
 
   onCancel() {
     this.show = false;
+    this.showCard=false;
+    this.townList=[];
+    document.getElementById("map").style.height ="100%";
+    this.map.invalidateSize(true);
+    this.boundaryLayer.clearLayers();
   }
 
 
@@ -388,31 +434,65 @@ export class LandUseComponent implements OnInit {
   }
 
   onCancel1() {
-    console.log('onCancel');
+    this.showCard=false;
+    this.countriesList=[];
+    document.getElementById("map").style.height ="100%";
+    this.map.invalidateSize(true);
     this.show1 = false;
+    this.boundaryLayer.clearLayers();
   }
   onChange1(value) {
   var that=this;
+  
     this.counties.features.forEach(element => {
+      
        if(value.indexOf(element.properties.id) != -1){
-        this.show1 = false;
-      /*   var polygon = L.polygon(element.geometry.coordinates, {color: 'red'}).addTo(this.map); */
+        that.show1 = false;
+        
+        var polygon = L.polygon(element.geometry.coordinates, {color: 'red'}); 
 
         L.geoJSON(element, {
           style: function (feature) {
             return { color: feature.properties.color };
           }
-        }).addTo(this.boundaryLayer)
-         
+        }).addTo(this.boundaryLayer).on('click',function(){
+       var polygon1 = L.polygon(element.geometry.coordinates, {color: 'red'}); 
+       var bounds= polygon1._bounds;
+       var southWest = L.latLng(bounds._southWest.lng, bounds._southWest.lat),
+       northEast = L.latLng(bounds._northEast.lng, bounds._northEast.lat),
+       latLngBounds = L.latLngBounds(southWest, northEast);
+
+       that.map.fitBounds(latLngBounds);  
+
+
        that.showCard=true;
-       that.mapheight="60%";
        that.cardTitle=element.properties.FNAME;
        that.czarea=element.properties.czarea;
        that.fkarea=element.properties.fkarea;
        that.gdarea=element.properties.gdarea;
        that.kzarea=element.properties.kzarea;
-       that.map.setView(element.geometry.coordinates,15);
 
+        })
+         
+       document.getElementById("map").style.height ="60%";
+       this.map.invalidateSize(true);
+       var bounds= polygon._bounds;
+       var southWest = L.latLng(bounds._southWest.lng, bounds._southWest.lat),
+       northEast = L.latLng(bounds._northEast.lng, bounds._northEast.lat),
+       latLngBounds = L.latLngBounds(southWest, northEast);
+
+       this.map.fitBounds(latLngBounds);  
+
+
+       that.showCard=true;
+       that.cardTitle=element.properties.FNAME;
+       that.czarea=element.properties.czarea;
+       that.fkarea=element.properties.fkarea;
+       that.gdarea=element.properties.gdarea;
+       that.kzarea=element.properties.kzarea;
+      
+     
+    
 
         this.countriesList.push(element.properties.id);
        }
@@ -458,11 +538,14 @@ export class LandUseComponent implements OnInit {
 
   callBack(){
     this.showCard=false;
-    this.mapheight="100%";
+    this.countriesList=[];
+    this.townList=[];
+    document.getElementById("map").style.height ="100%";
+    this.map.invalidateSize(true);
     this.boundaryLayer.clearLayers();
   }
   //添加图标
-  addLocationControl(map: any): any {
+  addLocationControl(map: any,type): any {
     var that=this;
     L.Control.Location = L.Control.extend({
       options: {
@@ -474,12 +557,39 @@ export class LandUseComponent implements OnInit {
       },
       onAdd (map:any) {
         //创建一个class为location的div
-        this._container = L.DomUtil.create('div', 'leaflet-control-chengshi leaflet-control');
-        this._container.innerHTML = "<a><i class='iconfont icon-chengshi'></i></a>";
-        this._container.addEventListener('click', function () {
-        //  var position = that.locationMarker.getLatLng();
-         // map.flyTo(position, 17);
-        });
+        this._container = L.DomUtil.create('div', 'leaflet-control-location leaflet-control');
+        switch(type){
+           case "Location":
+           this._container.innerHTML = "<a><i class='iconfont icon-"+type+"'></i></a>";
+           this._container.addEventListener('click', function () {
+           //  var position = that.locationMarker.getLatLng();
+            // map.flyTo(position, 17);
+           });
+           break;
+           case "chengshiicon":
+           this._container.innerHTML = "<a><i class='iconfont icon-"+type+"'></i></a>";
+           this._container.addEventListener('click', function () {
+            that.boundaryLayer.clearLayers();
+            that.handleClick1();
+           });
+           break;
+           case "chengshijianshe":
+           this._container.innerHTML = "<a><i class='iconfont icon-"+type+"'></i></a>";
+           this._container.addEventListener('click', function () {
+            that.boundaryLayer.clearLayers();
+            that.handleClick();
+           });
+           break;
+           case "kangjuxiangcun":
+           this._container.innerHTML = "<a><i class='iconfont icon-"+type+"'></i></a>";
+           this._container.addEventListener('click', function () {
+            that.showPicker();
+           });
+           break;
+
+        }  
+
+       
 
         return this._container;
       },
