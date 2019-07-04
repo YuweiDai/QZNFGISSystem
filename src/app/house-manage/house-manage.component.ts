@@ -14,7 +14,7 @@ import L from 'leaflet';
   styleUrls: ['./house-manage.component.less']
 })
 export class HouseManageComponent implements OnInit {
-  pageTitle = "地图看房";
+
 
   qzBou: any;
   counties: any;
@@ -285,9 +285,7 @@ export class HouseManageComponent implements OnInit {
               style: function (feature) {
                 return that.boundaryStyles.fwStyle;
               }
-            }).bindTooltip(element.properties.Name, {
-              permanent: true
-            }).openTooltip().addTo(that.boundaryLayer).on('click', function () {
+            }).addTo(that.boundaryLayer).on('click', function () {
               that.state.modal1 = true;
               that.title = element.properties.Name + "农房信息";
               that.houseObj = element.properties;
@@ -297,6 +295,26 @@ export class HouseManageComponent implements OnInit {
           });
           //#endregion
           break;
+      }
+    }
+    else {
+      if (currentClass == "自然村") {
+
+        // that.boundaryLayer.eachLayer(function (house) {
+        //   if (level == 19) {
+        //     house.bindTooltip(house.properties.Name, {
+        //       permanent: true
+        //     })
+        //   }
+        //   else {
+        //     house.unbindTooltip();
+        //   }
+        //   console.log(house);
+
+        // });
+
+
+
       }
     }
     that.previousLevel = level;
@@ -349,7 +367,6 @@ export class HouseManageComponent implements OnInit {
 
             //重新设置tooltip
             that.boundaryLayer.eachLayer(function (house) {
-
               console.log(house);
               house.setTooltipContent(house.properties[field]);
             });
