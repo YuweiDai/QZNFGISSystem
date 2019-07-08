@@ -1,19 +1,10 @@
-<!-- <div class="mapContainer">
-  <div id="map"></div>
-</div>
-
-<div class="searchContainer" [ngStyle]="{'width.px': searchBarWidth}">
-  <div style="border-bottom: 1px solid #ddd;">
-    <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8" ></SearchBar>
-  </div>
-</div> -->
 
 <div class="mapContainer">
   <div id="map" class="map" style="position: absolute;width: 100%;" [ngStyle]="{'height': mapheight}"></div>
 </div>
 <div class="searchContainer" [ngStyle]="{'width.px': searchBarWidth}">
     <div style="border-bottom: 1px solid #ddd;">
-      <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8"></SearchBar>
+      <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8" (onChange)="searchChange($event)" (onCancel)="searchCancel()" ></SearchBar>
     </div>
   </div>
 

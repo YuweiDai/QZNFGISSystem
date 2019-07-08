@@ -4,7 +4,8 @@
 
   <div class="searchContainer" [ngStyle]="{'width.px': searchBarWidth}">
       <div style="border-bottom: 1px solid #ddd;">
-        <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8" ></SearchBar>
+        <SearchBar [placeholder]="'搜索行政村名...'" [maxLength]="8" (onChange)="searchChange($event)"
+        ></SearchBar>
       </div>
     </div>
 

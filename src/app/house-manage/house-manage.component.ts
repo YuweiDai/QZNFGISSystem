@@ -58,37 +58,37 @@ export class HouseManageComponent implements OnInit {
     Floor: "1",
     LandArea: "59.26",
     ConstructArea: "59.26",
-    QZFS: "空斗",
-    Structure: "其他",
-    Usage: "自住",
-    Arround: "平地",
-    SZJC: "无加层",
-    Under: "2",
-    SW: "1",
-    DKB: "2",
-    XSNCKNJT: "0",
-    JDQK: "",
-    CDZL: "",
-    YDSX: "2",
-    JSGHSX: "2",
-    FWCQ: "1",
-    CJSJ: "2018/10/8 20:50",
-    CJR: "孙莉莉",
-    FWXZ: "",
-    WPYS: "",
-    FWWQYS: "",
-    QTLDLJ: "",
-    WQXT: "",
-    WQYS: "",
-    SFSYFZ: "",
-    SFSYFZFJS: "",
-    SFSYTDAZ: "",
-    SFJYWWBLJZ: "",
-    SWSYFZQT: "",
-    FKTJ: "",
-    SCYY: "",
-    TPSL: "2",
-    Status: "正常"
+    // QZFS: "空斗",
+    // Structure: "其他",
+    // Usage: "自住",
+    // Arround: "平地",
+    // SZJC: "无加层",
+    // Under: "2",
+    // SW: "1",
+    // DKB: "2",
+    // XSNCKNJT: "0",
+    // JDQK: "",
+    // CDZL: "",
+    // YDSX: "2",
+    // JSGHSX: "2",
+    // FWCQ: "1",
+    // CJSJ: "2018/10/8 20:50",
+    // CJR: "孙莉莉",
+    // FWXZ: "",
+    // WPYS: "",
+    // FWWQYS: "",
+    // QTLDLJ: "",
+    // WQXT: "",
+    // WQYS: "",
+    // SFSYFZ: "",
+    // SFSYFZFJS: "",
+    // SFSYTDAZ: "",
+    // SFJYWWBLJZ: "",
+    // SWSYFZQT: "",
+    // FKTJ: "",
+    // SCYY: "",
+    // TPSL: "2",
+    // Status: "正常"
   };
 
   constructor(private titleService: Title, private mapService: MapService, private layoutService: LayoutService, private geoDataService: GeodataService,
@@ -389,4 +389,10 @@ export class HouseManageComponent implements OnInit {
 
     this.toolTipControl = L.control.tooltipControl({ position: 'topright' });
   }
+
+  searchChange($event){
+    this.map.setView([28.982185050845146, 118.72790694236755], 16);
+  }
+
+
 }

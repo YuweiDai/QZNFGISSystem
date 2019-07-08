@@ -28,6 +28,7 @@ export class LandUseComponent implements OnInit {
   towns: any;
   searchBarWidth: number;
   boundaryLayer: any;
+  marker:any;
   labelMarkerLayer: any;
   delayData = [];
   countriesList = [];
@@ -301,7 +302,7 @@ export class LandUseComponent implements OnInit {
       { value: this.value, data: this.seasons },
       result => {
 
-        L.marker([28.982185050845146, 118.72790694236755], { icon: this.icon }).addTo(this.map)
+      this.marker=  L.marker([28.982185050845146, 118.72790694236755], { icon: this.icon }).addTo(this.map)
           .bindPopup('<p>村庄建设用地面积：148.50亩</p><p>复垦为耕地面积：00.00亩</p><p>耕地提升后备资源面积：458.01亩</p><p>垦造耕地后备资源面积：623.14亩</p>')
           .openPopup();
         this.map.setView([28.982185050845146, 118.72790694236755], 16);
@@ -546,6 +547,7 @@ export class LandUseComponent implements OnInit {
     document.getElementById("map").style.height = "100%";
     this.map.invalidateSize(true);
     this.boundaryLayer.clearLayers();
+    this.map.removeLayer(this.marker);
   }
   //添加图标
   addLocationControl(map: any, type): any {
@@ -608,6 +610,50 @@ export class LandUseComponent implements OnInit {
     var locationControl = L.control.location({ position: 'bottomleft' });
     //添加图例
     locationControl.addTo(map);
+  }
+
+
+  searchChange($event){
+    this.boundaryLayer.clearLayers();
+    this.marker= L.marker([28.982185050845146, 118.72790694236755], { icon: this.icon }).addTo(this.map)
+          .bindPopup('<p>村庄建设用地面积：148.50亩</p><p>复垦为耕地面积：00.00亩</p><p>耕地提升后备资源面积：458.01亩</p><p>垦造耕地后备资源面积：623.14亩</p>')
+          .openPopup();
+        this.map.setView([28.982185050845146, 118.72790694236755], 16);
+        this.showCard = true;
+        this.mapheight = "60%";
+        this.cardTitle = "余东村";
+        this.czarea = "148.50亩";
+        this.fkarea = "00.00亩";
+        this.gdarea = "458.01亩";
+        this.kzarea = "623.14亩";
+  }
+
+  searchCancel(){
+    var that=this;
+    this.map.removeLayer(this.marker);
+    var qzData = that.qzBou;
+    //添加境界对象
+    var qz = L.geoJSON(qzData, {
+      style: function (feature) {
+        return that.boundaryStyles.qzStyle;
+      }
+    }).addTo(that.boundaryLayer);
+
+    document.getElementById("map").style.height = "60%";
+    this.map.invalidateSize(true);
+    var bounds = qz.getBounds();
+
+
+    this.map.fitBounds(bounds);
+
+
+    that.showCard = true;
+    that.cardTitle = qzData.features[0].properties.FNAME;
+    that.czarea = qzData.features[0].properties.czarea;
+    that.fkarea = qzData.features[0].properties.fkarea;
+    that.gdarea = qzData.features[0].properties.gdarea;
+    that.kzarea = qzData.features[0].properties.kzarea;
+
   }
 
 

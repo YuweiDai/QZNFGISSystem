@@ -4,7 +4,7 @@
 
 <div class="searchContainer" [ngStyle]="{'width.px': searchBarWidth}">
   <div style="border-bottom: 1px solid #ddd;">
-    <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8"></SearchBar>
+    <SearchBar [placeholder]="'搜索自然村名...'" [maxLength]="8" (onChange)="searchChange($event)"></SearchBar>
   </div>
 </div>
 
@@ -77,12 +77,12 @@
       <div class="info-row">
         <span class="infoLabel">结构：</span>
         <span class="infoContent">{{houseObj.Structure}}</span>
-      </div>    
+      </div>
+    </div>
   </div>
 
-
 </Modal>
- 
+
 <ng-template #message>
   <div class="am-action-sheet-message">123</div>
 </ng-template>

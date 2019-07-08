@@ -162,4 +162,9 @@ export class CountryPlanComponent implements OnInit {
     this.addInitData();
   }
 
+
+  searchChange($event){
+    this.map.setView([28.982185050845146, 118.72790694236755], 16);
+  }
+
 }
