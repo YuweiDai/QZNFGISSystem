@@ -59,7 +59,7 @@ export class HouseManageComponent implements OnInit {
     LandArea: "59.26",
     ConstructArea: "59.26",
     // QZFS: "空斗",
-    // Structure: "其他",
+     Structure: "其他"
     // Usage: "自住",
     // Arround: "平地",
     // SZJC: "无加层",
